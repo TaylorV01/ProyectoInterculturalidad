@@ -1,83 +1,18 @@
-Equipo-B
 import 'package:flutter/material.dart';
 
-class GameScreen extends StatelessWidget {
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/background/bck.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Play',
-                  style: TextStyle(
-                    fontSize: 54,
-                    fontFamily: 'Comic Sans MS',
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  'Jugar',
-                  style: TextStyle(
-                    fontSize: 54,
-                    fontFamily: 'Comic Sans MS',
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 20),
-
-                // Botón de Play interactivo
-                GestureDetector(
-                  onTap: () {
-                    // Aquí va la lógica para comenzar el juego
-                    print('Comenzar juego');
-                    // Puedes navegar a otra pantalla o iniciar el juego aquí
-                    // Navigator.push(...); o cualquier lógica relacionada
-                  },
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 3,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.5),
-                          blurRadius: 8,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                  ), 
-                ),
-              ],  
-            ),
-          ),
-        ],
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: GameScreen(),
     );
   }
 }
-=======
-import 'package:flutter/material.dart';
 
 class GameScreen extends StatelessWidget {
   @override
@@ -89,6 +24,9 @@ class GameScreen extends StatelessWidget {
             child: Image.asset(
               'assets/background/bck.jpg',
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: Colors.black,
+              ),
             ),
           ),
           Center(
@@ -99,7 +37,7 @@ class GameScreen extends StatelessWidget {
                   'Play',
                   style: TextStyle(
                     fontSize: 54,
-                    fontFamily: 'Comic Sans MS',
+                    fontFamily: 'Arial',
                     color: Colors.white,
                   ),
                 ),
@@ -107,23 +45,29 @@ class GameScreen extends StatelessWidget {
                   'Jugar',
                   style: TextStyle(
                     fontSize: 54,
-                    fontFamily: 'Comic Sans MS',
+                    fontFamily: 'Arial',
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 20),
 
-                //para testearlo puse este mensaje pero aqui deben
-                //implementar la logica del boton
+                // Botón que navega a la pantalla de juego
                 GestureDetector(
                   onTap: () {
-                    print('Comenzar juego');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PlayScreen()),
+                    );
                   },
-
-                  //boton de play
                   child: Image.asset(
                     'assets/imgs/play.png',
                     width: 80,
+                    height: 80,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.play_circle_fill,
+                      size: 80,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -134,4 +78,22 @@ class GameScreen extends StatelessWidget {
     );
   }
 }
-main
+
+// Nueva pantalla a la que se navega
+class PlayScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Game Screen"),
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: Center(
+        child: Text(
+          "¡Bienvenido al Juego!",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
