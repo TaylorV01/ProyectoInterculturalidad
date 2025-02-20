@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "330092439678",
+    "project_id": "interculturalidad-13249",
+    "storage_bucket": "interculturalidad-13249.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330092439678:android:32930ace2290d7d8bc102f",
+        "android_client_info": {
+          "package_name": "com.example.educativa_application_interculturalidad"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt-yi1sihy0_acrj-dv1W_BwFjJ2IyFkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
