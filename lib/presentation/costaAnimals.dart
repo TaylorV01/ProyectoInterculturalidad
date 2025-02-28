@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class CostaAnimals extends StatelessWidget {
   const CostaAnimals({super.key});
@@ -26,7 +27,8 @@ class CostaAnimals extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(10), // Padding for the button
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7), // Semi-transparent white background
+                  color: Colors.white
+                      .withOpacity(0.7), // Semi-transparent white background
                   borderRadius: BorderRadius.circular(10), // Rounded corners
                   border: Border.all(
                     color: Colors.black, // Black border
@@ -49,11 +51,14 @@ class CostaAnimals extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSelector('assets/imgs/costa/mono.png'), // Add your first image path here
+                    _buildSelector(
+                        'assets/imgs/costa/mono.png', 'assets/sounds/mono.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/costa/rana.png'), // Add your second image path here
+                    _buildSelector(
+                        'assets/imgs/costa/rana.png', 'assets/sounds/rana.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/costa/serpiente.png'), // Add your third image path here
+                    _buildSelector('assets/imgs/costa/serpiente.png',
+                        'assets/sounds/serpiente.mp3'),
                   ],
                 ),
                 SizedBox(height: 40), // Spacing between rows
@@ -61,11 +66,14 @@ class CostaAnimals extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSelector('assets/imgs/costa/tortuga.png'), // Add your fourth image path here
+                    _buildSelector('assets/imgs/costa/tortuga.png',
+                        'assets/sounds/tortuga.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/costa/tucan.png'), // Add your fifth image path here
+                    _buildSelector('assets/imgs/costa/tucan.png',
+                        'assets/sounds/tucan.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/costa/zorra.png'), // Add your sixth image path here
+                    _buildSelector('assets/imgs/costa/zorra.png',
+                        'assets/sounds/zorra.mp3'),
                   ],
                 ),
               ],
@@ -77,7 +85,9 @@ class CostaAnimals extends StatelessWidget {
   }
 
   // Helper method to build a single selector
-  Widget _buildSelector(String imagePath) {
+  Widget _buildSelector(String imagePath, String soundPath) {
+    final AudioPlayer audioPlayer = AudioPlayer();
+
     return Container(
       width: 200, // Selector width
       height: 300, // Selector height
@@ -94,18 +104,22 @@ class CostaAnimals extends StatelessWidget {
         children: [
           // Image with tap functionality
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               print('Image tapped: $imagePath');
+              await audioPlayer
+                  .play(AssetSource(soundPath)); // Play sound from assets
             },
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(15), // Rounded corners for the image
+              borderRadius:
+                  BorderRadius.circular(15), // Rounded corners for the image
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black, // Black border for the image
                     width: 3, // Border width
                   ),
-                  borderRadius: BorderRadius.circular(15), // Match the ClipRRect border radius
+                  borderRadius: BorderRadius.circular(
+                      15), // Match the ClipRRect border radius
                 ),
                 child: Image.asset(
                   imagePath, // Image path passed as a parameter
