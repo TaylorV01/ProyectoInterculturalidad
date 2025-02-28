@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 class CostaAnimals extends StatelessWidget {
   const CostaAnimals({super.key});
@@ -52,13 +51,13 @@ class CostaAnimals extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildSelector(
-                        'assets/imgs/costa/mono.png', 'assets/sounds/mono.mp3'),
+                        'assets/imgs/costa/mono.png'), // Add your first image path here
                     SizedBox(width: 20), // Spacing between selectors
                     _buildSelector(
-                        'assets/imgs/costa/rana.png', 'assets/sounds/rana.mp3'),
+                        'assets/imgs/costa/rana.png'), // Add your second image path here
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/costa/serpiente.png',
-                        'assets/sounds/serpiente.mp3'),
+                    _buildSelector(
+                        'assets/imgs/costa/serpiente.png'), // Add your third image path here
                   ],
                 ),
                 SizedBox(height: 40), // Spacing between rows
@@ -66,14 +65,14 @@ class CostaAnimals extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSelector('assets/imgs/costa/tortuga.png',
-                        'assets/sounds/tortuga.mp3'),
+                    _buildSelector(
+                        'assets/imgs/costa/tortuga.png'), // Add your fourth image path here
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/costa/tucan.png',
-                        'assets/sounds/tucan.mp3'),
+                    _buildSelector(
+                        'assets/imgs/costa/tucan.png'), // Add your fifth image path here
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/costa/zorra.png',
-                        'assets/sounds/zorra.mp3'),
+                    _buildSelector(
+                        'assets/imgs/costa/zorra.png'), // Add your sixth image path here
                   ],
                 ),
               ],
@@ -85,9 +84,7 @@ class CostaAnimals extends StatelessWidget {
   }
 
   // Helper method to build a single selector
-  Widget _buildSelector(String imagePath, String soundPath) {
-    final AudioPlayer audioPlayer = AudioPlayer();
-
+  Widget _buildSelector(String imagePath) {
     return Container(
       width: 200, // Selector width
       height: 300, // Selector height
@@ -104,10 +101,8 @@ class CostaAnimals extends StatelessWidget {
         children: [
           // Image with tap functionality
           GestureDetector(
-            onTap: () async {
+            onTap: () {
               print('Image tapped: $imagePath');
-              await audioPlayer
-                  .play(AssetSource(soundPath)); // Play sound from assets
             },
             child: ClipRRect(
               borderRadius:
