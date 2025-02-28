@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  flutter_screenutil: ^5.5.3+2
+  flutter_screenutil: ^5.9.3
   firebase_core: ^2.7.0
 
 dev_dependencies:
@@ -25,4 +25,18 @@ flutter:
     - assets/imgs/play.png
     - assets/imgs/perro.png
     - 'assets/imgs/leon.png'
-    - 'assets/background/bck2.jpg'
+    - assets/background/bck2.jpg
+    - assets/imgs/sierra.jpg
+    - assets/imgs/costa.png
+    - assets/imgs/Sierra/caballo.png
+    - assets/imgs/Sierra/cabra.png
+    - assets/imgs/Sierra/cerdito.png
+    - assets/imgs/Sierra/gallo.png
+    - assets/imgs/Sierra/oveja.png
+    - assets/imgs/Sierra/perro.png
+    - assets/imgs/costa/mono.png 
+    - assets/imgs/costa/rana.png
+    - assets/imgs/costa/serpiente.png
+    - assets/imgs/costa/tortuga.png
+    - assets/imgs/costa/tucan.png
+    - assets/imgs/costa/zorra.png
