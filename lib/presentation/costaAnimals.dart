@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class CostaAnimals extends StatelessWidget {
+class CostaAnimals extends StatefulWidget {
   const CostaAnimals({super.key});
+
+  @override
+  _CostaAnimalsState createState() => _CostaAnimalsState();
+}
+
+class _CostaAnimalsState extends State<CostaAnimals> {
+  // Instancia única de AudioPlayer
+  final AudioPlayer _player = AudioPlayer();
+
+  @override
+  void dispose() {
+    // Detener el sonido al salir de la pantalla
+    _player.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,28 +32,26 @@ class CostaAnimals extends StatelessWidget {
           ),
           // Back Button
           Positioned(
-            top: 40, // Distance from the top
-            left: 20, // Distance from the left
+            top: 40,
+            left: 20,
             child: GestureDetector(
               onTap: () {
-                // Navigate back to the previous screen
                 Navigator.pop(context);
               },
               child: Container(
-                padding: EdgeInsets.all(10), // Padding for the button
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white
-                      .withOpacity(0.7), // Semi-transparent white background
-                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: Colors.black, // Black border
-                    width: 2, // Border width
+                    color: Colors.black,
+                    width: 2,
                   ),
                 ),
                 child: Icon(
-                  Icons.arrow_back, // Back arrow icon
-                  size: 30, // Icon size
-                  color: Colors.black, // Icon color
+                  Icons.arrow_back,
+                  size: 30,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -46,33 +60,27 @@ class CostaAnimals extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // First Row of Selectors (3 selectors)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    _buildSelector('assets/imgs/costa/mono.png', 'mono.mp3'),
+                    SizedBox(width: 20),
+                    _buildSelector('assets/imgs/costa/rana.png', 'rana.mp3'),
+                    SizedBox(width: 20),
                     _buildSelector(
-                        'assets/imgs/costa/mono.png'), // Add your first image path here
-                    SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector(
-                        'assets/imgs/costa/rana.png'), // Add your second image path here
-                    SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector(
-                        'assets/imgs/costa/serpiente.png'), // Add your third image path here
+                        'assets/imgs/costa/serpiente.png', 'serpiente.mp3'),
                   ],
                 ),
-                SizedBox(height: 40), // Spacing between rows
-                // Second Row of Selectors (3 selectors)
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildSelector(
-                        'assets/imgs/costa/tortuga.png'), // Add your fourth image path here
-                    SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector(
-                        'assets/imgs/costa/tucan.png'), // Add your fifth image path here
-                    SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector(
-                        'assets/imgs/costa/zorra.png'), // Add your sixth image path here
+                        'assets/imgs/costa/ballena.jpg', 'ballena.mp3'),
+                    SizedBox(width: 20),
+                    _buildSelector('assets/imgs/costa/tucan.png', 'tucan.mp3'),
+                    SizedBox(width: 20),
+                    _buildSelector('assets/imgs/costa/zorra.png', 'zorra.mp3'),
                   ],
                 ),
               ],
@@ -83,62 +91,66 @@ class CostaAnimals extends StatelessWidget {
     );
   }
 
-  // Helper method to build a single selector
-  Widget _buildSelector(String imagePath) {
+  // Método para reproducir sonido y detener el sonido anterior
+  void _playSound(String soundFile) async {
+    // Detener cualquier sonido que se esté reproduciendo
+    await _player.stop();
+
+    // Reproducir el nuevo sonido
+    await _player.play(AssetSource("sounds/$soundFile"));
+  }
+
+  // Método para construir un selector con sonido
+  Widget _buildSelector(String imagePath, String soundFile) {
     return Container(
-      width: 200, // Selector width
-      height: 300, // Selector height
+      width: 200,
+      height: 300,
       decoration: BoxDecoration(
-        color: Colors.blue, // Background color of the selector
-        borderRadius: BorderRadius.circular(20), // Rounded corners
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Colors.black, // Black border
-          width: 3, // Border width
+          color: Colors.black,
+          width: 3,
         ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Image with tap functionality
           GestureDetector(
             onTap: () {
-              print('Image tapped: $imagePath');
+              _playSound(soundFile); // Reproducir el sonido al tocar la imagen
             },
             child: ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(15), // Rounded corners for the image
+              borderRadius: BorderRadius.circular(15),
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.black, // Black border for the image
-                    width: 3, // Border width
+                    color: Colors.black,
+                    width: 3,
                   ),
-                  borderRadius: BorderRadius.circular(
-                      15), // Match the ClipRRect border radius
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Image.asset(
-                  imagePath, // Image path passed as a parameter
-                  width: 150, // Image width
-                  height: 150, // Image height
-                  fit: BoxFit.cover, // Ensure the image covers the space
+                  imagePath,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
-          SizedBox(height: 20), // Spacing between image and buttons
-          // OK and Wrong buttons
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // OK Button
               ElevatedButton(
                 onPressed: () {
                   print('OK button pressed for: $imagePath');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // Green color for OK
+                  backgroundColor: Colors.green,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: Text(
@@ -149,16 +161,15 @@ class CostaAnimals extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 10), // Spacing between buttons
-              // Wrong Button
+              SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
                   print('Wrong button pressed for: $imagePath');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Red color for Wrong
+                  backgroundColor: Colors.red,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: Text(

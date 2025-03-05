@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class SierraAnimals extends StatelessWidget {
+class SierraAnimals extends StatefulWidget {
   const SierraAnimals({super.key});
+
+  @override
+  _SierraAnimalsState createState() => _SierraAnimalsState();
+}
+
+class _SierraAnimalsState extends State<SierraAnimals> {
+  // Instancia única de AudioPlayer
+  final AudioPlayer _player = AudioPlayer();
+
+  @override
+  void dispose() {
+    // Detener el sonido al salir de la pantalla
+    _player.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +42,8 @@ class SierraAnimals extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(10), // Padding for the button
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7), // Semi-transparent white background
+                  color: Colors.white
+                      .withOpacity(0.7), // Semi-transparent white background
                   borderRadius: BorderRadius.circular(10), // Rounded corners
                   border: Border.all(
                     color: Colors.black, // Black border
@@ -49,11 +66,13 @@ class SierraAnimals extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSelector('assets/imgs/Sierra/cabra.png'), // Add your first image path here
+                    _buildSelector('assets/imgs/Sierra/cabra.png', 'cabra.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/Sierra/cerdito.png'), // Add your second image path here
+                    _buildSelector(
+                        'assets/imgs/Sierra/cerdito.png', 'cerdito.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/Sierra/caballo.png'), // Add your third image path here
+                    _buildSelector(
+                        'assets/imgs/Sierra/caballo.png', 'caballo.mp3'),
                   ],
                 ),
                 SizedBox(height: 40), // Spacing between rows
@@ -61,11 +80,11 @@ class SierraAnimals extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSelector('assets/imgs/Sierra/gallo.png'), // Add your fourth image path here
+                    _buildSelector('assets/imgs/Sierra/gallo.png', 'gallo.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/Sierra/oveja.png'), // Add your fifth image path here
+                    _buildSelector('assets/imgs/Sierra/oveja.png', 'oveja.mp3'),
                     SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector('assets/imgs/Sierra/perro.png'), // Add your sixth image path here
+                    _buildSelector('assets/imgs/Sierra/perro.png', 'perro.mp3'),
                   ],
                 ),
               ],
@@ -76,8 +95,17 @@ class SierraAnimals extends StatelessWidget {
     );
   }
 
+  // Método para reproducir sonido y detener el sonido anterior
+  void _playSound(String soundFile) async {
+    // Detener cualquier sonido que se esté reproduciendo
+    await _player.stop();
+
+    // Reproducir el nuevo sonido
+    await _player.play(AssetSource("sounds/$soundFile"));
+  }
+
   // Helper method to build a single selector
-  Widget _buildSelector(String imagePath) {
+  Widget _buildSelector(String imagePath, String soundFile) {
     return Container(
       width: 200, // Selector width
       height: 300, // Selector height
@@ -95,17 +123,19 @@ class SierraAnimals extends StatelessWidget {
           // Image with tap functionality
           GestureDetector(
             onTap: () {
-              print('Image tapped: $imagePath');
+              _playSound(soundFile); // Reproducir el sonido al tocar la imagen
             },
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(15), // Rounded corners for the image
+              borderRadius:
+                  BorderRadius.circular(15), // Rounded corners for the image
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.black, // Black border for the image
                     width: 3, // Border width
                   ),
-                  borderRadius: BorderRadius.circular(15), // Match the ClipRRect border radius
+                  borderRadius: BorderRadius.circular(
+                      15), // Match the ClipRRect border radius
                 ),
                 child: Image.asset(
                   imagePath, // Image path passed as a parameter
