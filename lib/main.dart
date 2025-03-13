@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // Importa screenutil
-import 'package:educativa_application_interculturalidad/presentation/screenPrincipal.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; 
+import 'package:educativa_application_interculturalidad/presentation/game_screen.dart'; // Asegúrate de usar el nombre correcto
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,12 +23,13 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          title: 'Juego Intercultural',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: GameScreen(), // Mantiene la pantalla inicial
+          home: GameScreen(), // Asegúrate de que esta clase está en game_screen.dart
         );
       },
     );
