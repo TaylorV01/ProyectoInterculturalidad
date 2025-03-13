@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  audioplayers: ^6.2.0
   cupertino_icons: ^1.0.8
   flutter_screenutil: ^5.9.3
   firebase_core: ^2.7.0
@@ -37,6 +38,25 @@ flutter:
     - assets/imgs/costa/mono.png 
     - assets/imgs/costa/rana.png
     - assets/imgs/costa/serpiente.png
-    - assets/imgs/costa/tortuga.png
+    - assets/imgs/costa/ballena.jpg
     - assets/imgs/costa/tucan.png
     - assets/imgs/costa/zorra.png
+    - assets/sounds/cabra.mp3
+    - assets/sounds/cerdito.mp3
+    - assets/sounds/caballo.mp3
+    - assets/sounds/gallo.mp3
+    - assets/sounds/oveja.mp3
+    - assets/sounds/perro.mp3
+    - assets/sounds/tucan.mp3
+    - assets/sounds/serpiente.mp3
+    - assets/sounds/zorra.mp3
+
+    - assets/sounds/mono.mp3
+    - assets/sounds/rana.mp3
+    - assets/sounds/serpiente.mp3
+    - assets/sounds/tucan.mp3
+    - assets/sounds/zorra.mp3
+    - assets/sounds/ballena.mp3
+
+    - assets/sounds/excelente.mp3
+    - assets/sounds/fallaste.mp3
