@@ -9,14 +9,26 @@ class SierraAnimals extends StatefulWidget {
 }
 
 class _SierraAnimalsState extends State<SierraAnimals> {
-  // Instancia única de AudioPlayer
   final AudioPlayer _player = AudioPlayer();
+  int _score = 0; // Contador de aciertos
+  int _wrongScore = 0; // Contador de desaciertos
 
   @override
   void dispose() {
-    // Detener el sonido al salir de la pantalla
     _player.dispose();
     super.dispose();
+  }
+
+  void _incrementScore() {
+    setState(() {
+      _score++;
+    });
+  }
+
+  void _incrementWrongScore() {
+    setState(() {
+      _wrongScore++;
+    });
   }
 
   @override
@@ -30,60 +42,57 @@ class _SierraAnimalsState extends State<SierraAnimals> {
               fit: BoxFit.cover,
             ),
           ),
-          // Back Button
           Positioned(
-            top: 40, // Distance from the top
-            left: 20, // Distance from the left
+            top: 40,
+            left: 20,
             child: GestureDetector(
               onTap: () {
-                // Navigate back to the previous screen
                 Navigator.pop(context);
               },
               child: Container(
-                padding: EdgeInsets.all(10), // Padding for the button
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white
-                      .withOpacity(0.7), // Semi-transparent white background
-                  borderRadius: BorderRadius.circular(10), // Rounded corners
-                  border: Border.all(
-                    color: Colors.black, // Black border
-                    width: 2, // Border width
-                  ),
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.black, width: 2),
                 ),
-                child: Icon(
-                  Icons.arrow_back, // Back arrow icon
-                  size: 30, // Icon size
-                  color: Colors.black, // Icon color
-                ),
+                child: Icon(Icons.arrow_back, size: 30, color: Colors.black),
               ),
+            ),
+          ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: Column(
+              children: [
+                _buildScoreDisplay("Aciertos", _score, Colors.green),
+                SizedBox(height: 10),
+                _buildScoreDisplay("Errores", _wrongScore, Colors.red),
+              ],
             ),
           ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // First Row of Selectors (3 selectors)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildSelector('assets/imgs/Sierra/cabra.png', 'cabra.mp3'),
-                    SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector(
-                        'assets/imgs/Sierra/cerdito.png', 'cerdito.mp3'),
-                    SizedBox(width: 20), // Spacing between selectors
-                    _buildSelector(
-                        'assets/imgs/Sierra/caballo.png', 'caballo.mp3'),
+                    SizedBox(width: 20),
+                    _buildSelector('assets/imgs/Sierra/cerdito.png', 'cerdito.mp3'),
+                    SizedBox(width: 20),
+                    _buildSelector('assets/imgs/Sierra/caballo.png', 'caballo.mp3'),
                   ],
                 ),
-                SizedBox(height: 40), // Spacing between rows
-                // Second Row of Selectors (3 selectors)
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildSelector('assets/imgs/Sierra/gallo.png', 'gallo.mp3'),
-                    SizedBox(width: 20), // Spacing between selectors
+                    SizedBox(width: 20),
                     _buildSelector('assets/imgs/Sierra/oveja.png', 'oveja.mp3'),
-                    SizedBox(width: 20), // Spacing between selectors
+                    SizedBox(width: 20),
                     _buildSelector('assets/imgs/Sierra/perro.png', 'perro.mp3'),
                   ],
                 ),
@@ -95,99 +104,90 @@ class _SierraAnimalsState extends State<SierraAnimals> {
     );
   }
 
-  // Método para reproducir sonido y detener el sonido anterior
-  void _playSound(String soundFile) async {
-    // Detener cualquier sonido que se esté reproduciendo
-    await _player.stop();
+  Widget _buildScoreDisplay(String label, int count, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        '$label: $count',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
 
-    // Reproducir el nuevo sonido
+  void _playSound(String soundFile) async {
+    await _player.stop();
     await _player.play(AssetSource("sounds/$soundFile"));
   }
 
-  // Helper method to build a single selector
   Widget _buildSelector(String imagePath, String soundFile) {
     return Container(
-      width: 200, // Selector width
-      height: 300, // Selector height
+      width: 200,
+      height: 300,
       decoration: BoxDecoration(
-        color: Colors.blue, // Background color of the selector
-        borderRadius: BorderRadius.circular(20), // Rounded corners
-        border: Border.all(
-          color: Colors.black, // Black border
-          width: 3, // Border width
-        ),
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.black, width: 3),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Image with tap functionality
           GestureDetector(
             onTap: () {
-              _playSound(soundFile); // Reproducir el sonido al tocar la imagen
+              _playSound(soundFile);
             },
             child: ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(15), // Rounded corners for the image
+              borderRadius: BorderRadius.circular(15),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black, // Black border for the image
-                    width: 3, // Border width
-                  ),
-                  borderRadius: BorderRadius.circular(
-                      15), // Match the ClipRRect border radius
+                  border: Border.all(color: Colors.black, width: 3),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Image.asset(
-                  imagePath, // Image path passed as a parameter
-                  width: 150, // Image width
-                  height: 150, // Image height
-                  fit: BoxFit.cover, // Ensure the image covers the space
+                  imagePath,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
-          SizedBox(height: 20), // Spacing between image and buttons
-          // OK and Wrong buttons
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // OK Button
               ElevatedButton(
-                onPressed: () {
-                  print('OK button pressed for: $imagePath');
-                },
+                onPressed: _incrementScore,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // Green color for OK
+                  backgroundColor: Colors.green,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: Text(
                   'OK',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
-              SizedBox(width: 10), // Spacing between buttons
-              // Wrong Button
+              SizedBox(width: 10),
               ElevatedButton(
-                onPressed: () {
-                  print('Wrong button pressed for: $imagePath');
-                },
+                onPressed: _incrementWrongScore,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Red color for Wrong
+                  backgroundColor: Colors.red,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: Text(
                   'Wrong',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ],

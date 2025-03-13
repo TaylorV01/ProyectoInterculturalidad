@@ -9,14 +9,27 @@ class CostaAnimals extends StatefulWidget {
 }
 
 class _CostaAnimalsState extends State<CostaAnimals> {
-  // Instancia única de AudioPlayer
   final AudioPlayer _player = AudioPlayer();
+
+  int _correctCount = 0; // Contador de aciertos
+  int _wrongCount = 0;   // Contador de desaciertos
 
   @override
   void dispose() {
-    // Detener el sonido al salir de la pantalla
     _player.dispose();
     super.dispose();
+  }
+
+  void _incrementCorrect() {
+    setState(() {
+      _correctCount++;
+    });
+  }
+
+  void _incrementWrong() {
+    setState(() {
+      _wrongCount++;
+    });
   }
 
   @override
@@ -30,7 +43,6 @@ class _CostaAnimalsState extends State<CostaAnimals> {
               fit: BoxFit.cover,
             ),
           ),
-          // Back Button
           Positioned(
             top: 40,
             left: 20,
@@ -56,6 +68,17 @@ class _CostaAnimalsState extends State<CostaAnimals> {
               ),
             ),
           ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: Column(
+              children: [
+                _buildScoreDisplay("Aciertos", _correctCount, Colors.green),
+                SizedBox(height: 10),
+                _buildScoreDisplay("Desaciertos", _wrongCount, Colors.red),
+              ],
+            ),
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -67,16 +90,14 @@ class _CostaAnimalsState extends State<CostaAnimals> {
                     SizedBox(width: 20),
                     _buildSelector('assets/imgs/costa/rana.png', 'rana.mp3'),
                     SizedBox(width: 20),
-                    _buildSelector(
-                        'assets/imgs/costa/serpiente.png', 'serpiente.mp3'),
+                    _buildSelector('assets/imgs/costa/serpiente.png', 'serpiente.mp3'),
                   ],
                 ),
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSelector(
-                        'assets/imgs/costa/ballena.jpg', 'ballena.mp3'),
+                    _buildSelector('assets/imgs/costa/ballena.jpg', 'ballena.mp3'),
                     SizedBox(width: 20),
                     _buildSelector('assets/imgs/costa/tucan.png', 'tucan.mp3'),
                     SizedBox(width: 20),
@@ -91,16 +112,29 @@ class _CostaAnimalsState extends State<CostaAnimals> {
     );
   }
 
-  // Método para reproducir sonido y detener el sonido anterior
-  void _playSound(String soundFile) async {
-    // Detener cualquier sonido que se esté reproduciendo
-    await _player.stop();
+  Widget _buildScoreDisplay(String label, int count, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        '$label: $count',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
 
-    // Reproducir el nuevo sonido
+  void _playSound(String soundFile) async {
+    await _player.stop();
     await _player.play(AssetSource("sounds/$soundFile"));
   }
 
-  // Método para construir un selector con sonido
   Widget _buildSelector(String imagePath, String soundFile) {
     return Container(
       width: 200,
@@ -118,7 +152,7 @@ class _CostaAnimalsState extends State<CostaAnimals> {
         children: [
           GestureDetector(
             onTap: () {
-              _playSound(soundFile); // Reproducir el sonido al tocar la imagen
+              _playSound(soundFile);
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
@@ -144,9 +178,7 @@ class _CostaAnimalsState extends State<CostaAnimals> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  print('OK button pressed for: $imagePath');
-                },
+                onPressed: _incrementCorrect,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   shape: RoundedRectangleBorder(
@@ -163,9 +195,7 @@ class _CostaAnimalsState extends State<CostaAnimals> {
               ),
               SizedBox(width: 10),
               ElevatedButton(
-                onPressed: () {
-                  print('Wrong button pressed for: $imagePath');
-                },
+                onPressed: _incrementWrong,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   shape: RoundedRectangleBorder(
